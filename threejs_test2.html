@@ -1,0 +1,58 @@
+<!-- From http://threejs.org/docs/#Manual/Introduction/Creating_a_scene -->
+<html>
+	<head>
+		<title>My first Three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.min.js"></script>
+		<script src="js/lodash.min.js"></script>
+		<script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+
+    var num = 10;
+    var spacing = 7;
+    var offset = -4.5;
+		var cameraBack = 70
+
+    var cubes = [];
+
+    _.range(num).forEach(function (x) {
+      _.range(num).forEach(function (y) {
+        _.range(num).forEach(function (z) {
+
+          var cube = new THREE.Mesh( geometry, material );
+					cubes.push(cube);
+					scene.add( cube );
+					cube.position.set((x + offset) * spacing, (y + offset) * spacing, (z + offset) * spacing);
+        });
+      });
+    });
+
+    camera.position.z = cameraBack;
+
+    function render() {
+      requestAnimationFrame( render );
+
+			cubes.forEach(function(cube) {
+				cube.rotation.x += 0.01;
+	      cube.rotation.y += 0.01;
+			});
+
+      renderer.render( scene, camera );
+    }
+    render();
+		</script>
+	</body>
+</html>
